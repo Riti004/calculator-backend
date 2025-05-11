@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+<body>
+    <div>
+        <h1>Calculator</h1>
+        <form id="calculator-form">
+           <select id="operation" required>
+                <option value="" disabled selected>Choose operation</option>
+                <option value="sum">Add</option>
+                <option value="subtract">Subtract</option>
+                <option value="multiply">Multiply</option>
+                <option value="divide">Divide</option>
+            </select>
+            <br>
+            <br>
+            <input type="number" id="num1" placeholder="First number" required>
+            <input type="number" id="num2" placeholder="Second number" required>
+            <button type="submit">Calculate</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('calculator-form').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get values from the form
+    const operation = document.getElementById('operation').value;
+    const num1 = parseFloat(document.getElementById('num1').value);
+    const num2 = parseFloat(document.getElementById('num2').value);
+
+    // Validate inputs
+    if (!operation || isNaN(num1) || isNaN(num2)) {
+        document.getElementById('result').innerText = 'Please provide valid inputs.';
+        return;
+    }
+
+    try {
+        // Construct the API URL
+        const apiUrl = `https://calculator-backend-xcsi.onrender.com/${operation}?a=${num1}&b=${num2}`;
+
+        // Call the API
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json' // Specify JSON response
+            }
+        });
+        console.log(response);
+        // Parse the response
+        const data = await response.json();
+
+        // Display the result
+        if (response.ok) {
+            const result = data['result']; // Extract the result using the operation key
+            document.getElementById('result').innerText = `Result: ${result}`;
+        } else {
+            document.getElementById('result').innerText = `Error: ${data.message}`;
+        }
+    } catch (error) {
+        document.getElementById('result').innerText = 'Error: Unable to connect to the API.';
+    }
+});
+    </script>
+</body>
+</html>
