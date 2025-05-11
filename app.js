@@ -1,14 +1,22 @@
 const express = require('express');
 const cors = require('cors'); // Import the cors middleware
+const path = require('path');
 
 const app = express();
 app.use(express.json());
 app.use(cors()); // Enable CORS for all routes
+// Serve static files from "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+});
+
+// Optionally, serve index.html on root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get('/sum', (req, res) => {
