@@ -18,8 +18,8 @@ app.get('/sum', (req, res) => {
     if (isNaN(numA) || isNaN(numB)) {
         return res.status(400).json({ error: 'Invalid input' });
     }
-    const sum = numA + numB;
-    return res.json({ sum });
+    const result = numA + numB;
+    return res.json({ result });
 });
 
 app.get('/multiply', (req, res) => {
@@ -29,8 +29,8 @@ app.get('/multiply', (req, res) => {
     if (isNaN(numA) || isNaN(numB)) {
         return res.status(400).json({ error: 'Invalid input' });
     }
-    const product = numA * numB;
-    res.json({ product });
+    const result = numA * numB;
+    res.json({ result });
 });
 
 app.get('/divide', (req, res) => {
@@ -43,8 +43,8 @@ app.get('/divide', (req, res) => {
     if (numB === 0) {
         return res.status(400).json({ error: 'Division by zero' });
     }
-    const quotient = numA / numB;
-    res.json({ quotient });
+    const result = numA / numB;
+    res.json({ result });
 });
 
 app.get('/subtract', (req, res) => {
@@ -54,6 +54,6 @@ app.get('/subtract', (req, res) => {
     if (isNaN(numA) || isNaN(numB)) {
         return res.status(400).json({ error: 'Invalid input' });
     }
-    const difference = numA - numB;
-    res.json({ difference });
+    const result = numA - numB;
+    res.json({ result });
 });
