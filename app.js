@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors'); // Import the cors middleware
 const path = require('path');
+const math = require('mathjs');
 
 const app = express();
 app.use(express.json());
@@ -64,4 +65,22 @@ app.get('/subtract', (req, res) => {
     }
     const result = numA - numB;
     res.json({ result });
+});
+
+app.get('/calculate', (req, res) => {
+    const { expression } = req.query;
+
+    if (!expression) {
+        return res.status(400).json({ error: 'No expression provided' });
+    }
+    try {   
+        const normalizedExpression = expression.replace(/\s/g, '+');
+        if (!/^[0-9+\-*/().\s]+$/.test(normalizedExpression)) {
+            return res.status(400).json({ error: 'Expression contains invalid characters' });
+        }
+        const result = math.evaluate(normalizedExpression);
+        return res.json({ result });
+    } catch (error) { 
+        return res.status(400).json({ error: 'Invalid expression', details: error.message });
+    }
 });
